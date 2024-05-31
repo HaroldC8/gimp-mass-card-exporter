@@ -1,5 +1,5 @@
 # gimp-mass-card-exporter
-A gimp python script for exporting cards based on a template and some provided data.
+A gimp python script for exporting cards for printing based on a template and some provided data.
 
 ## Usage
 - Create an empty folder
