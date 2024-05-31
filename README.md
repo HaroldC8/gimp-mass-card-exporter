@@ -6,7 +6,7 @@ A gimp python script for exporting cards based on a template and some provided d
 - Create a gimp file that you want to be used as a template
 - Create a text file where your card data is stored
 - Open gimp python console and paste in the code in main.py
-- Type ```run("*directory name*")``` in the console and press enter
+- Type ```run("directory name")``` in the console and press enter
 
 ## Todo
 - [x] Function to process gimp file based on text inputs and dynamically change the position of the durability
