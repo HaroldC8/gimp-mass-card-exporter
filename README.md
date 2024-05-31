@@ -8,6 +8,13 @@ A gimp python script for exporting cards for printing based on a template and so
 - Open gimp python console and paste in the code in main.py
 - Type ```run("directory name")``` in the console and press enter
 
+## Example
+Input
+![image](https://github.com/HaroldC8/gimp-mass-card-exporter/assets/70860865/bbe78e1c-bc74-4c22-8612-c09fbbe50100)
+Output
+![processed0](https://github.com/HaroldC8/gimp-mass-card-exporter/assets/70860865/67f2c569-7e36-4d45-a4c5-016447308db6)
+
+
 ## Todo
 - [x] Function to process gimp file based on text inputs and dynamically change the position of the durability
 - [x] Open text input file and read from it
