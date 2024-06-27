@@ -95,4 +95,3 @@ def run(directory):
 
 if __name__ == "__main__":
     print "Running as __main__ with args: %s" % sys.argv
-    run("C:\Users\User\Documents\Art\Cards\Exports")
