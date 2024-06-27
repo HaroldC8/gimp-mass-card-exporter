@@ -19,4 +19,3 @@ A gimp python script for exporting cards for printing based on a template and so
 - [x] For each text input call function to process gimp file
 - [x] Store outputs in new A4 page files for printing
 - [x] Open image input file and use those images
-- [ ] Randomize background texture position in range
