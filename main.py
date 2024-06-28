@@ -1,18 +1,19 @@
 import os, glob, sys, time, math
 from gimpfu import *
 
-Width = 2480
-Height = 3508
-Border = 100
-Spacing = 4
+Width = 3508
+Height = 2480
+XBorder = 230
+YBorder = 180
+Spacing = 0
 IconWidth = 556
 IconHeight = 698
 
 # Calculate next card position based on iteration
-def layer_pos(sizeX, sizeY, width, border, spacing, iteration):
-	mod = math.floor((width - (2 * border)) / (sizeX + spacing))
-	x = (int)(border + (spacing + sizeX) * (iteration % mod))
-	y = (int)(border + (spacing + sizeY) * math.floor(iteration / mod))
+def layer_pos(sizeX, sizeY, width, xborder, yborder, spacing, iteration):
+	mod = math.floor((width - (2 * xborder)) / (sizeX + spacing))
+	x = (int)(xborder + (spacing + sizeX) * (iteration % mod))
+	y = (int)(yborder + (spacing + sizeY) * math.floor(iteration / mod))
 	return x, y
 
 def save_image(outImage, infile, j):
@@ -25,14 +26,13 @@ def save_image(outImage, infile, j):
     return gimp.Image(Width, Height, RGB)
 
 def process(infile, outImage, values, icons, iteration, realIteration):
-    print "Processing file %s " % infile
+    print "Processing card: %s " % values[0].strip()
     inImage = pdb.gimp_file_load(infile, infile, run_mode=RUN_NONINTERACTIVE)
     i = 0
     # Changing text and durability position
     for layer in inImage.layers:
 		if "Value" in layer.name:
 			values[i] = values[i].strip()
-			print "Changing value of layer %s to %s" % (layer.name, values[i])
 			font = pdb.gimp_text_layer_get_font(layer)
 			font_size, font_unit = pdb.gimp_text_layer_get_font_size(layer)
 			font_color = pdb.gimp_text_layer_get_color(layer)
@@ -42,10 +42,9 @@ def process(infile, outImage, values, icons, iteration, realIteration):
 			pdb.gimp_text_layer_set_color(layer, font_color)
 			i += 1
 		if "ChangePosImage" in layer.name:
-			print "Changing image layer %s y pos to %s" % (layer.name, 90*(9-int(values[2])))
 			layer.set_offsets(562, 90*(9-int(values[2])))
 	# Add icon image
-    iconX, iconY = layer_pos(IconWidth, IconHeight, icons.active_layer.width, 0, 0, realIteration)
+    iconX, iconY = layer_pos(IconWidth, IconHeight, icons.active_layer.width, 0, 0, 0, realIteration)
     pdb.gimp_image_select_rectangle(icons, CHANNEL_OP_REPLACE, iconX, iconY, IconWidth, IconHeight)
     pdb.gimp_edit_copy(icons.active_layer)
     pastedIcon = gimp.Layer(inImage, "icon", inImage.active_layer.width, inImage.active_layer.height, RGBA_IMAGE, 100, NORMAL_MODE)
@@ -58,8 +57,7 @@ def process(infile, outImage, values, icons, iteration, realIteration):
     outImage.add_layer(copy_layer, 1)
     pdb.gimp_edit_copy(single_layer)
     copy_layer = pdb.gimp_edit_paste(copy_layer, FALSE)
-    offsetX, offsetY = layer_pos(copy_layer.width, copy_layer.height, Width, Border, Spacing, iteration)
-    print "Adding card to output image"
+    offsetX, offsetY = layer_pos(copy_layer.width, copy_layer.height, Width, XBorder, YBorder, Spacing, iteration)
     copy_layer.set_offsets(offsetX, offsetY)
 
 def run(directory):
@@ -82,7 +80,7 @@ def run(directory):
     j = 0
     it = 0
     for i in range(0, len(lines)/4):
-	    if layer_pos(inImage.width, inImage.height, Width, Border, Spacing, it)[1] + inImage.height + Border > Height:
+	    if layer_pos(inImage.width, inImage.height, Width, XBorder, YBorder, Spacing, it)[1] + inImage.height + YBorder > Height:
 		    outImage = save_image(outImage, infiles[0], j)
 		    j += 1
 		    it = 0
